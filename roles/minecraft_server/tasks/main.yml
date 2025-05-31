@@ -93,9 +93,8 @@
   cron:
     name: "Minecraft server backup"
     job: "{{ minecraft_server_dir }}/backup.sh"
-    special_time: daily
-    hour: "3"
     minute: "0"
+    hour: "3"
     user: "{{ minecraft_user }}"
   when: backup_enabled
 
