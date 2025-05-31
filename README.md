@@ -81,14 +81,8 @@ The role includes an automated backup system that:
 - Implements retention policy
 - Stores backups in a dedicated directory
 
-## License
-
-MIT
 
 ## Author Information
 
-Created by [Your Name]
+Created by Santi Vermeulen
 
-## Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request. 
