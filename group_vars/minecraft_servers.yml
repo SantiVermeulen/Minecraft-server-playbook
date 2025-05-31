@@ -1,5 +1,4 @@
----
-# Minecraft Server Configuration
+# Minecraft Server configuratie
 minecraft_memory_min: "2G"
 minecraft_memory_max: "4G"
 minecraft_port: 25565
@@ -15,6 +14,6 @@ minecraft_server_properties:
   white-list: "true"
   online-mode: "true"
 
-# Backup Configuration
+# Backup Configuratie
 backup_enabled: true
 backup_retention_days: 7 
