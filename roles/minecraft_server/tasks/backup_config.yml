@@ -1,0 +1,17 @@
+- name: Create backup script
+  template:
+    src: backup.sh.j2
+    dest: "{{ minecraft_server_dir }}/backup.sh"
+    owner: "{{ minecraft_user }}"
+    group: "{{ minecraft_group }}"
+    mode: '0755'
+  register: backup_script_create
+
+- name: Configure backup cron job
+  cron:
+    name: "Minecraft server backup"
+    job: "{{ minecraft_server_dir }}/backup.sh"
+    minute: "0"
+    hour: "3"
+    user: "{{ minecraft_user }}"
+  register: backup_cron_create 

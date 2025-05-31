@@ -1,3 +1,19 @@
+- name: Include system preparation tasks
+  ansible.builtin.import_tasks: system_prep.yml
+
+- name: Include user and directory setup tasks
+  ansible.builtin.import_tasks: user_setup.yml
+
+- name: Include Minecraft server installation tasks
+  ansible.builtin.import_tasks: server_install.yml
+
+- name: Include service configuration tasks
+  ansible.builtin.import_tasks: service_config.yml
+
+- name: Include backup configuration tasks
+  ansible.builtin.import_tasks: backup_config.yml
+  when: backup_enabled | bool
+
 - name: Update system packages
   dnf:
     name: "*"

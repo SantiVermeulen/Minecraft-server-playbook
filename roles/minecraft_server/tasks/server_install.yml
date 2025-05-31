@@ -1,0 +1,29 @@
+- name: Download Minecraft server jar
+  get_url:
+    url: "https://piston-data.mojang.com/v1/objects/8dd1a28015f51b1803213892b50b7b4fc76e594d/server.jar"
+    dest: "{{ minecraft_server_dir }}/{{ minecraft_server_jar }}"
+    owner: "{{ minecraft_user }}"
+    group: "{{ minecraft_group }}"
+    mode: '0644'
+  register: jar_download
+  retries: 3
+  delay: 5
+  until: jar_download is success
+
+- name: Create server.properties
+  template:
+    src: server.properties.j2
+    dest: "{{ minecraft_server_dir }}/server.properties"
+    owner: "{{ minecraft_user }}"
+    group: "{{ minecraft_group }}"
+    mode: '0644'
+  register: properties_create
+
+- name: Create start script
+  template:
+    src: start.sh.j2
+    dest: "{{ minecraft_server_dir }}/start.sh"
+    owner: "{{ minecraft_user }}"
+    group: "{{ minecraft_group }}"
+    mode: '0755'
+  register: start_script_create 

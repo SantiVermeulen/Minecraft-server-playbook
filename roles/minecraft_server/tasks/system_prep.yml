@@ -1,0 +1,44 @@
+- name: Update system packages
+  dnf:
+    name: "*"
+    state: latest
+    update_cache: yes
+  register: system_update
+  retries: 3
+  delay: 5
+  until: system_update is success
+
+- name: Install required packages
+  dnf:
+    name:
+      - java-17-openjdk
+      - screen
+      - wget
+      - tar
+      - git
+      - firewalld
+      - cronie
+    state: present
+  register: package_install
+  retries: 3
+  delay: 5
+  until: package_install is success
+
+- name: Start and enable firewalld
+  service:
+    name: firewalld
+    state: started
+    enabled: yes
+  register: firewalld_start
+
+- name: Configure firewall rules
+  firewalld:
+    port: "{{ item }}"
+    permanent: yes
+    state: enabled
+    immediate: yes
+  loop: "{{ firewall_allowed_ports }}"
+  register: firewall_config
+  retries: 3
+  delay: 5
+  until: firewall_config is success 

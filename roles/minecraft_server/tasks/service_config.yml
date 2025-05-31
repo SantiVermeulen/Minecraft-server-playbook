@@ -1,0 +1,18 @@
+- name: Create systemd service
+  template:
+    src: minecraft.service.j2
+    dest: /etc/systemd/system/minecraft.service
+    mode: '0644'
+  register: service_create
+  notify: reload systemd
+
+- name: Start and enable Minecraft service
+  systemd:
+    name: minecraft
+    state: started
+    enabled: yes
+    daemon_reload: yes
+  register: service_start
+  retries: 3
+  delay: 5
+  until: service_start is success 
