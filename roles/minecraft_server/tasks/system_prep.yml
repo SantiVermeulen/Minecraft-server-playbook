@@ -1,15 +1,20 @@
-- name: Update system packages
-  dnf:
+---
+# Systeemvoorbereidingstaken
+# Dit bestand behandelt alle systeemvoorbereidingen, inclusief pakketinstallatie en firewallconfiguratie
+
+- name: Update alle pakketten (alleen voor RedHat/Rocky)
+  ansible.builtin.dnf:  # noqa package-latest
     name: "*"
     state: latest
-    update_cache: yes
+    update_cache: true
   register: system_update
   retries: 3
   delay: 5
   until: system_update is success
+  when: ansible_facts['os_family'] == 'RedHat'
 
-- name: Install required packages
-  dnf:
+- name: Installeer vereiste pakketten
+  ansible.builtin.dnf:
     name:
       - java-17-openjdk
       - screen
@@ -23,22 +28,25 @@
   retries: 3
   delay: 5
   until: package_install is success
+  when: ansible_facts['os_family'] == 'RedHat'
 
-- name: Start and enable firewalld
-  service:
+- name: Start en activeer firewalld
+  ansible.builtin.service:
     name: firewalld
     state: started
-    enabled: yes
+    enabled: true
   register: firewalld_start
+  when: ansible_facts['os_family'] == 'RedHat'
 
-- name: Configure firewall rules
-  firewalld:
+- name: Configureer firewall regels
+  ansible.posix.firewalld:
     port: "{{ item }}"
-    permanent: yes
+    permanent: true
     state: enabled
-    immediate: yes
-  loop: "{{ firewall_allowed_ports }}"
+    immediate: true
+  loop: "{{ minecraft_server_firewall_allowed_ports }}"
   register: firewall_config
   retries: 3
   delay: 5
-  until: firewall_config is success 
+  until: firewall_config is success
+  when: ansible_facts['os_family'] == 'RedHat' 
