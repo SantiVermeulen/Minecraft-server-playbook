@@ -54,4 +54,8 @@ security_ssh_public_key_authentication: "yes"
 docker_enabled: false
 docker_compose_version: "2.24.1"
 docker_network_name: "minecraft_network"
-docker_volume_name: "minecraft_data" 
+docker_volume_name: "minecraft_data"
+
+minecraft_server_firewall_allowed_ports:
+  - "25565/tcp"
+  - "22/tcp" 
