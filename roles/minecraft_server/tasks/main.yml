@@ -16,6 +16,11 @@
       - cronie
     state: present
 
+- name: Create Minecraft group
+  group:
+    name: "{{ minecraft_group }}"
+    state: present
+
 - name: Create Minecraft user and group
   user:
     name: "{{ minecraft_user }}"
