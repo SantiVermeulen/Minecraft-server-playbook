@@ -1,0 +1,20 @@
+---
+# Minecraft Server Configuration
+minecraft_memory_min: "2G"
+minecraft_memory_max: "4G"
+minecraft_port: 25565
+
+# Server Settings
+minecraft_server_properties:
+  difficulty: "normal"
+  gamemode: "survival"
+  max-players: 20
+  view-distance: 10
+  motd: "Welcome to My Minecraft Server!"
+  pvp: "true"
+  white-list: "true"
+  online-mode: "true"
+
+# Backup Configuration
+backup_enabled: true
+backup_retention_days: 7 

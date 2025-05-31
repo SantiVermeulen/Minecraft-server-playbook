@@ -1,0 +1,6 @@
+#!/bin/bash
+
+cd {{ minecraft_server_dir }}
+
+# Start Minecraft server with specified memory settings
+java -Xms{{ minecraft_memory_min }} -Xmx{{ minecraft_memory_max }} -jar {{ minecraft_server_jar }} nogui 

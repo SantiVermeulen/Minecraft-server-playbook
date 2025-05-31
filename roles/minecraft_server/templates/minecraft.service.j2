@@ -1,0 +1,15 @@
+[Unit]
+Description=Minecraft Server
+After=network.target
+
+[Service]
+User={{ minecraft_user }}
+Group={{ minecraft_group }}
+WorkingDirectory={{ minecraft_server_dir }}
+ExecStart={{ minecraft_server_dir }}/start.sh
+Restart=on-failure
+RestartSec=5
+TimeoutStartSec=0
+
+[Install]
+WantedBy=multi-user.target 

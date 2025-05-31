@@ -1,0 +1,102 @@
+- name: Update system packages
+  dnf:
+    name: "*"
+    state: latest
+    update_cache: yes
+
+- name: Install required packages
+  dnf:
+    name:
+      - java-17-openjdk
+      - screen
+      - wget
+      - tar
+      - git
+      - firewalld
+      - cronie
+    state: present
+
+- name: Create Minecraft user and group
+  user:
+    name: "{{ minecraft_user }}"
+    group: "{{ minecraft_group }}"
+    shell: /bin/bash
+    create_home: yes
+    home: "{{ minecraft_server_dir }}"
+
+- name: Create Minecraft server directory
+  file:
+    path: "{{ minecraft_server_dir }}"
+    state: directory
+    owner: "{{ minecraft_user }}"
+    group: "{{ minecraft_group }}"
+    mode: '0755'
+
+- name: Download Minecraft server jar
+  get_url:
+    url: "https://piston-data.mojang.com/v1/objects/8dd1a28015f51b1803213892b50b7b4fc76e594d/server.jar"
+    dest: "{{ minecraft_server_dir }}/{{ minecraft_server_jar }}"
+    owner: "{{ minecraft_user }}"
+    group: "{{ minecraft_group }}"
+    mode: '0644'
+
+- name: Create server.properties
+  template:
+    src: server.properties.j2
+    dest: "{{ minecraft_server_dir }}/server.properties"
+    owner: "{{ minecraft_user }}"
+    group: "{{ minecraft_group }}"
+    mode: '0644'
+
+- name: Create start script
+  template:
+    src: start.sh.j2
+    dest: "{{ minecraft_server_dir }}/start.sh"
+    owner: "{{ minecraft_user }}"
+    group: "{{ minecraft_group }}"
+    mode: '0755'
+
+- name: Create systemd service
+  template:
+    src: minecraft.service.j2
+    dest: /etc/systemd/system/minecraft.service
+    mode: '0644'
+
+- name: Start and enable firewalld
+  service:
+    name: firewalld
+    state: started
+    enabled: yes
+
+- name: Configure firewall rules
+  firewalld:
+    port: "{{ item }}"
+    permanent: yes
+    state: enabled
+    immediate: yes
+  loop: "{{ firewall_allowed_ports }}"
+
+- name: Create backup script
+  template:
+    src: backup.sh.j2
+    dest: "{{ minecraft_server_dir }}/backup.sh"
+    owner: "{{ minecraft_user }}"
+    group: "{{ minecraft_group }}"
+    mode: '0755'
+
+- name: Configure backup cron job
+  cron:
+    name: "Minecraft server backup"
+    job: "{{ minecraft_server_dir }}/backup.sh"
+    special_time: daily
+    hour: "3"
+    minute: "0"
+    user: "{{ minecraft_user }}"
+  when: backup_enabled
+
+- name: Start and enable Minecraft service
+  systemd:
+    name: minecraft
+    state: started
+    enabled: yes
+    daemon_reload: yes 

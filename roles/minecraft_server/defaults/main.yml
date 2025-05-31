@@ -1,0 +1,57 @@
+minecraft_version: "1.20.4"
+minecraft_server_jar: "server.jar"
+minecraft_server_dir: "/opt/minecraft"
+minecraft_user: "minecraft"
+minecraft_group: "minecraft"
+minecraft_memory_min: "1G"
+minecraft_memory_max: "2G"
+minecraft_port: 25565
+minecraft_backup_dir: "/opt/minecraft/backups"
+minecraft_backup_retention_days: 7
+
+# Server Settings
+minecraft_server_properties:
+  server-port: "{{ minecraft_port }}"
+  difficulty: "normal"
+  gamemode: "survival"
+  max-players: 20
+  view-distance: 10
+  spawn-protection: 16
+  motd: "Welcome to Minecraft Server!"
+  pvp: "true"
+  allow-flight: "false"
+  white-list: "false"
+  enforce-whitelist: "false"
+  online-mode: "true"
+  enable-command-block: "false"
+  spawn-npcs: "true"
+  spawn-animals: "true"
+  spawn-monsters: "true"
+  generate-structures: "true"
+  level-name: "world"
+  level-seed: ""
+  level-type: "default"
+  hardcore: "false"
+
+system_timezone: "UTC"
+system_locale: "en_US.UTF-8"
+
+firewall_allowed_ports:
+  - "{{ minecraft_port }}/tcp"
+  - "22/tcp"
+
+# Backups dat na zoveel tijd gemaakt worden
+backup_enabled: true
+backup_schedule: "0 3 * * *"  
+backup_compression: true
+
+security_ssh_port: 22
+security_ssh_permit_root_login: "no"
+security_ssh_password_authentication: "no"
+security_ssh_public_key_authentication: "yes"
+
+# Docker configuratie (als je docker gebruikt)
+docker_enabled: false
+docker_compose_version: "2.24.1"
+docker_network_name: "minecraft_network"
+docker_volume_name: "minecraft_data" 

@@ -1,0 +1,5 @@
+- name: Deploy Minecraft Server
+  hosts: minecraft_servers
+  become: true
+  roles:
+    - minecraft_server 
