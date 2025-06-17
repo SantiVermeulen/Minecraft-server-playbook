@@ -52,7 +52,7 @@ All configurable variables are defined in `roles/minecraft_server/defaults/main.
 5. Run the playbook:
 
 ```bash
-ansible-playbook -i inventory site.yml
+ansible-playbook -i inventory.ini site.yml
 ```
 
 ## Features
