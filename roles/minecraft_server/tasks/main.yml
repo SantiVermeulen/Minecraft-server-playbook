@@ -24,7 +24,6 @@
   dnf:
     name:
       - java-17-openjdk
-      - screen
       - wget
       - tar
       - git

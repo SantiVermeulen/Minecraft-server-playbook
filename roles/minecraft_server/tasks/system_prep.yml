@@ -17,7 +17,6 @@
   ansible.builtin.dnf:
     name:
       - java-17-openjdk
-      - screen
       - wget
       - tar
       - git
@@ -65,7 +64,6 @@
   ansible.builtin.apt:
     name:
       - openjdk-17-jre-headless
-      - screen
       - wget
       - tar
       - git
